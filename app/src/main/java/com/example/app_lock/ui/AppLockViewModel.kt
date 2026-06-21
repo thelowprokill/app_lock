@@ -26,7 +26,8 @@ class AppLockViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         viewModelScope.launch {
-            repository.securityPin.first()
+            // Wait for at least one emission to confirm initialization
+            repository.securityPin.firstOrNull()
             _isInitialized.value = true
         }
     }
