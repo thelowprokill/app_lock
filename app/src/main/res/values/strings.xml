@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">app_lock</string>
+    <string name="accessibility_service_description">Used to detect when a locked application is opened and show the lock screen overlay.</string>
+</resources>

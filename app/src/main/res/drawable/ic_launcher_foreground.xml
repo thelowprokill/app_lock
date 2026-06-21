@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Shield -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,24 C44,24 34,27 28,34 V54 C28,70 54,84 54,84 C54,84 80,70 80,54 V34 C74,27 64,24 54,24 Z" />
+    <!-- Lock Body -->
+    <path
+        android:fillColor="#1A237E"
+        android:pathData="M42,56 h24 v14 h-24 z" />
+    <!-- Lock Shackle -->
+    <path
+        android:fillColor="#1A237E"
+        android:pathData="M47,56 v-4 c0,-3.8 3.1,-7 7,-7 s7,3.2 7,7 v4 h-3 v-4 c0,-2.2 -1.8,-4 -4,-4 s-4,1.8 -4,4 v4 z" />
+    <!-- Keyhole / PIN indicator -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,61 a2,2 0 1 0 0,4 a2,2 0 1 0 0,-4" />
+</vector>
