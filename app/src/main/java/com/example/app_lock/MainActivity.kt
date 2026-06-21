@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
         var showPermissionDialog by remember { mutableStateOf(false) }
 
+        // Check for accessibility permission on resume
         DisposableEffect(Unit) {
             val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
                 if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {

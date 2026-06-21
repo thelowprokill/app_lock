@@ -30,6 +30,7 @@ class LockActivity : ComponentActivity() {
             "Restricted App"
         }
 
+        // Handle back button to go home instead of back to the locked app
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 goHome()

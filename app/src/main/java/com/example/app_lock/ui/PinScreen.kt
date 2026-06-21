@@ -74,7 +74,6 @@ fun PinScreen(
             
             Spacer(modifier = Modifier.height(32.dp))
 
-            // PIN Display
             Row(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -87,7 +86,6 @@ fun PinScreen(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // Number Pad
             NumberPad(
                 onNumberClick = { num ->
                     errorText = null
@@ -97,7 +95,7 @@ fun PinScreen(
                             if (confirmPin.length == 4) {
                                 if (confirmPin == pin) {
                                     if (onPinConfirmed(pin)) {
-                                        // Success handled by caller
+                                        // Success
                                     } else {
                                         errorText = "Invalid PIN"
                                         confirmPin = ""
@@ -118,7 +116,7 @@ fun PinScreen(
                                     isConfirming = true
                                 } else {
                                     if (onPinConfirmed(pin)) {
-                                        // Correct
+                                        // PIN correct
                                     } else {
                                         errorText = "Incorrect PIN"
                                         pin = ""
