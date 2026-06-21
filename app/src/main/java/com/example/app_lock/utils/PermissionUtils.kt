@@ -7,9 +7,6 @@ import android.text.TextUtils
 import com.example.app_lock.service.AppLockAccessibilityService
 
 object PermissionUtils {
-    /**
-     * Checks if the AppLockAccessibilityService is enabled in system settings.
-     */
     fun isAccessibilityServiceEnabled(context: Context): Boolean {
         val expectedComponentName = ComponentName(context, AppLockAccessibilityService::class.java).flattenToString()
         val enabledServices = Settings.Secure.getString(

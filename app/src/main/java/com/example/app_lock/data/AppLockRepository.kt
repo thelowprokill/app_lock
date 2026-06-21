@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_lock_settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_lock_settings")
 
 class AppLockRepository(private val context: Context) {
 

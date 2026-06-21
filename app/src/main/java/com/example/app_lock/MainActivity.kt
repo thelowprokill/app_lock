@@ -53,7 +53,6 @@ class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
         var showPermissionDialog by remember { mutableStateOf(false) }
 
-        // Check for accessibility permission on resume
         DisposableEffect(Unit) {
             val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
                 if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
@@ -72,7 +71,7 @@ class MainActivity : ComponentActivity() {
             AlertDialog(
                 onDismissRequest = { showPermissionDialog = false },
                 title = { Text("Permission Required") },
-                text = { Text("This app requires Accessibility Service permission to detect when locked apps are opened. Please enable it in settings.") },
+                text = { Text("App Lock requires Accessibility Service permission to monitor app launches. Please enable it in settings.") },
                 confirmButton = {
                     TextButton(onClick = {
                         showPermissionDialog = false

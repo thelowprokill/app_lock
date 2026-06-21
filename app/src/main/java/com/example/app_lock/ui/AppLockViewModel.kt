@@ -26,9 +26,8 @@ class AppLockViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         viewModelScope.launch {
-            repository.securityPin.collect {
-                _isInitialized.value = true
-            }
+            repository.securityPin.first()
+            _isInitialized.value = true
         }
     }
 
@@ -45,7 +44,7 @@ class AppLockViewModel(application: Application) : AndroidViewModel(application)
             emptyList<ApplicationInfo>()
         }
         installedApps
-            .filter { it.packageName != getApplication<Application>().packageName }
+            .filter { it.packageName != application.packageName }
             .map { appInfo ->
                 AppInfo(
                     name = appInfo.loadLabel(packageManager).toString(),
