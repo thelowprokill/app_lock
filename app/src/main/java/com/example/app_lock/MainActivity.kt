@@ -1,6 +1,7 @@
 package com.example.app_lock
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -16,6 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -52,13 +54,18 @@ class MainActivity : ComponentActivity() {
     private fun MainContent(viewModel: AppLockViewModel, securityPin: String?) {
         val navController = rememberNavController()
         var showPermissionDialog by remember { mutableStateOf(false) }
+        var isRestricted by remember { mutableStateOf(false) }
 
-        // Check for accessibility permission on resume
+        // Monitor lifecycle to check permissions when user returns from settings
         DisposableEffect(Unit) {
             val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
                 if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                    if (!PermissionUtils.isAccessibilityServiceEnabled(this@MainActivity)) {
+                    val enabled = PermissionUtils.isAccessibilityServiceEnabled(this@MainActivity)
+                    if (!enabled) {
+                        isRestricted = PermissionUtils.isAccessibilityRestricted(this@MainActivity)
                         showPermissionDialog = true
+                    } else {
+                        showPermissionDialog = false
                     }
                 }
             }
@@ -70,15 +77,32 @@ class MainActivity : ComponentActivity() {
 
         if (showPermissionDialog) {
             AlertDialog(
-                onDismissRequest = { showPermissionDialog = false },
-                title = { Text("Permission Required") },
-                text = { Text("App Lock requires Accessibility Service permission to monitor app launches. Please enable it in settings.") },
+                onDismissRequest = { /* Permission is mandatory for core functionality */ },
+                title = { 
+                    Text(
+                        text = if (isRestricted) "Restricted Setting" else "Permission Required",
+                        fontWeight = FontWeight.Bold
+                    ) 
+                },
+                text = { 
+                    if (isRestricted) {
+                        Text("For your security, this setting is currently unavailable.\n\nTo enable it:\n1. Go to App Info for App Lock.\n2. Tap the ⋮ menu in the top-right corner.\n3. Select 'Allow restricted settings'.\n4. Authenticate your identity (PIN/Fingerprint).\n5. Return here and try going to Accessibility Settings again.")
+                    } else {
+                        Text("App Lock requires Accessibility Service permission to protect your restricted apps. Please enable it in Settings.")
+                    }
+                },
                 confirmButton = {
                     TextButton(onClick = {
-                        showPermissionDialog = false
-                        startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                        if (isRestricted) {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", packageName, null)
+                            }
+                            startActivity(intent)
+                        } else {
+                            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                        }
                     }) {
-                        Text("Go to Settings")
+                        Text(if (isRestricted) "Open App Info" else "Go to Settings")
                     }
                 },
                 dismissButton = {

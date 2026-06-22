@@ -81,6 +81,7 @@ fun App_lockTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
+            // Implement Edge-to-Edge with transparent system bars
             window.statusBarColor = Color.Transparent.toArgb()
             window.navigationBarColor = Color.Transparent.toArgb()
             

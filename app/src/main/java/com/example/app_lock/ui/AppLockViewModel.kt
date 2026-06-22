@@ -26,7 +26,6 @@ class AppLockViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         viewModelScope.launch {
-            // Wait for DataStore to load
             repository.securityPin.firstOrNull()
             _isInitialized.value = true
         }

@@ -95,7 +95,7 @@ fun PinScreen(
                             if (confirmPin.length == 4) {
                                 if (confirmPin == pin) {
                                     if (onPinConfirmed(pin)) {
-                                        // Success
+                                        // Success handled by caller
                                     } else {
                                         errorText = "Invalid PIN"
                                         confirmPin = ""
@@ -116,7 +116,7 @@ fun PinScreen(
                                     isConfirming = true
                                 } else {
                                     if (onPinConfirmed(pin)) {
-                                        // PIN correct
+                                        // Success handled by caller
                                     } else {
                                         errorText = "Incorrect PIN"
                                         pin = ""
@@ -141,8 +141,8 @@ fun PinScreen(
 
 @Composable
 fun PinDot(filled: Boolean) {
-    val size by animateDpAsState(if (filled) 20.dp else 16.dp, label = "size")
-    val color by animateColorAsState(if (filled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant, label = "color")
+    val size by animateDpAsState(if (filled) 20.dp else 16.dp, label = "dot_size")
+    val color by animateColorAsState(if (filled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant, label = "dot_color")
     
     Box(
         modifier = Modifier.size(24.dp),

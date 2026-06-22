@@ -27,16 +27,13 @@ class AppLockAccessibilityService : AccessibilityService() {
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             val packageName = event.packageName?.toString() ?: return
             
-            // Don't lock our own app
             if (packageName == applicationContext.packageName) return
             
-            // Update LockManager with current foreground package
             LockManager.updateForegroundPackage(packageName)
 
             serviceScope.launch {
                 val lockedPackages = repository.lockedPackages.first()
                 if (lockedPackages.contains(packageName)) {
-                    // Check if the package is already unlocked for this session
                     if (!LockManager.isPackageUnlocked(packageName)) {
                         Log.d("AppLockService", "Locked app detected: $packageName")
                         val intent = Intent(applicationContext, LockActivity::class.java).apply {

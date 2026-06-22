@@ -28,7 +28,7 @@ val OnBackgroundLight = Color(0xFF1A1C1E)
 val SurfaceLight = Color(0xFFFDFBFF)
 val OnSurfaceLight = Color(0xFF1A1C1E)
 
-// Dark Theme
+// Dark Theme Palette
 val PrimaryDark = Color(0xFFA6C8FF)
 val OnPrimaryDark = Color(0xFF00315E)
 val PrimaryContainerDark = Color(0xFF004885)
