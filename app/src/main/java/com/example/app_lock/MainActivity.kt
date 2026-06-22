@@ -10,10 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,15 +77,15 @@ class MainActivity : ComponentActivity() {
                 onDismissRequest = { /* Permission is mandatory for core functionality */ },
                 title = { 
                     Text(
-                        text = if (isRestricted) "Restricted Setting" else "Permission Required",
+                        text = if (isRestricted) "Restricted Setting Detected" else "Permission Required",
                         fontWeight = FontWeight.Bold
                     ) 
                 },
                 text = { 
                     if (isRestricted) {
-                        Text("For your security, this setting is currently unavailable.\n\nTo enable it:\n1. Go to App Info for App Lock.\n2. Tap the ⋮ menu in the top-right corner.\n3. Select 'Allow restricted settings'.\n4. Authenticate your identity (PIN/Fingerprint).\n5. Return here and try going to Accessibility Settings again.")
+                        Text("For your security, Android has restricted this setting because the app was sideloaded.\n\nTo enable App Lock:\n1. Open 'Settings' -> 'Apps' -> 'App Lock'.\n2. Tap the ⋮ menu in the top-right corner.\n3. Select 'Allow restricted settings'.\n4. Authenticate your identity (PIN/Fingerprint).\n5. Return to this app and try going to Accessibility Settings again.")
                     } else {
-                        Text("App Lock requires Accessibility Service permission to protect your restricted apps. Please enable it in Settings.")
+                        Text("App Lock requires Accessibility Service permission to detect when protected apps are opened and show the lock screen. Please enable it in Settings.")
                     }
                 },
                 confirmButton = {
@@ -106,8 +103,15 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showPermissionDialog = false }) {
-                        Text("Cancel")
+                    TextButton(onClick = { 
+                        if (!isRestricted) {
+                            showPermissionDialog = false 
+                        } else {
+                             // If restricted, give them an option to try going to accessibility directly to trigger the system dialog
+                             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                        }
+                    }) {
+                        Text(if (isRestricted) "Try Accessibility Anyway" else "Cancel")
                     }
                 }
             )

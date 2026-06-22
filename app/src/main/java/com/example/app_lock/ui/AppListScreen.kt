@@ -29,8 +29,11 @@ fun AppListScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     val context = LocalContext.current
     
-    val isPermissionGranted by remember { 
-        derivedStateOf { PermissionUtils.isAccessibilityServiceEnabled(context) }
+    var isServiceEnabled by remember { mutableStateOf(PermissionUtils.isAccessibilityServiceEnabled(context)) }
+
+    // Re-check permission when the screen is focused
+    LaunchedEffect(Unit) {
+        isServiceEnabled = PermissionUtils.isAccessibilityServiceEnabled(context)
     }
 
     Scaffold(
@@ -51,27 +54,19 @@ fun AppListScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            if (!isPermissionGranted) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    )
+            if (!isServiceEnabled) {
+                Surface(
+                    color = MaterialTheme.colorScheme.errorContainer,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
                         modifier = Modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            Icons.Default.Warning,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
-                        )
+                        Icon(Icons.Default.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
-                            text = "Accessibility Service is disabled. App protection is inactive.",
+                            text = "Service is disabled. Locking is inactive.",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )
